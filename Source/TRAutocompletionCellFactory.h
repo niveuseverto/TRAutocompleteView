@@ -2,6 +2,11 @@
 // Copyright (c) 2013, Taras Roshko
 // All rights reserved.
 //
+
+// Significant modifications added by Yaroslav Vorontsov
+// Copyright (c) 2015-2016, Yaroslav Vorontsov
+// All rights reserved.
+
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are met:
 //
@@ -27,16 +32,14 @@
 // either expressed or implied, of the FreeBSD Project.
 //
 
-#import <Foundation/Foundation.h>
-#import <CoreLocation/CoreLocation.h>
-#import "TRAutocompleteItemsSource.h"
+@import UIKit;
 
-@interface TRGoogleMapsAutocompleteItemsSource : NSObject <TRAutocompleteItemsSource>
+@protocol TRSuggestionItem;
 
-@property(nonatomic) CLLocationCoordinate2D location;
-@property(nonatomic) CGFloat radiusMeters;
+@protocol TRAutocompletionCell <NSObject>
+- (void)updateWithSuggestionItem:(id <TRSuggestionItem>)item;
+@end
 
-- (id)initWithMinimumCharactersToTrigger:(NSUInteger)minimumCharactersToTrigger apiKey:(NSString *)apiKey;
-- (id)initWithMinimumCharactersToTrigger:(NSUInteger)minimumCharactersToTrigger language: (NSString*) language apiKey:(NSString *)apiKey;
-
+@protocol TRAutocompletionCellFactory <NSObject>
+- (UITableViewCell <TRAutocompletionCell> *)createReusableCellWithIdentifier:(NSString *)identifier;
 @end

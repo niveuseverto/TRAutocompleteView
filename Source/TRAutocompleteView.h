@@ -2,6 +2,11 @@
 // Copyright (c) 2013, Taras Roshko
 // All rights reserved.
 //
+
+// Significant modifications added by Yaroslav Vorontsov
+// Copyright (c) 2015-2016, Yaroslav Vorontsov
+// All rights reserved.
+
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are met:
 //
@@ -27,52 +32,26 @@
 // either expressed or implied, of the FreeBSD Project.
 //
 
-#import "TRGoogleMapsAutocompletionCellFactory.h"
-#import "TRAutocompleteItemsSource.h"
+@import UIKit;
 
-@interface TRGoogleMapsAutocompletionCell : UITableViewCell <TRAutocompletionCell>
-@end
+@protocol TRAutocompleteItemsSource;
+@protocol TRAutocompletionCellFactory;
+@protocol TRSuggestionItem;
 
-@implementation TRGoogleMapsAutocompletionCell
-
-- (void)updateWith:(id <TRSuggestionItem>)item
-{
-    self.textLabel.text = item.completionText;
-}
-
-@end
-
-@implementation TRGoogleMapsAutocompletionCellFactory
-{
-    UIColor *_foregroundColor;
-    CGFloat _fontSize;
-}
-
-- (id)initWithCellForegroundColor:(UIColor *)foregroundColor fontSize:(CGFloat)fontSize
-{
-    self = [super init];
-    if (self)
-    {
-        _foregroundColor = foregroundColor;
-        _fontSize = fontSize;
-    }
-
-    return self;
-}
-
-- (id <TRAutocompletionCell>)createReusableCellWithIdentifier:(NSString *)identifier
-{
-    TRGoogleMapsAutocompletionCell *cell = [[TRGoogleMapsAutocompletionCell alloc]
-                                                                            initWithStyle:UITableViewCellStyleDefault
-                                                                          reuseIdentifier:identifier];
-    cell.textLabel.font = [UIFont systemFontOfSize:_fontSize];
-    cell.textLabel.textColor = _foregroundColor;
-
-    cell.backgroundColor = [UIColor clearColor];
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
-
-    return cell;
-
-}
-
+@interface TRAutocompleteView : UIView <UIGestureRecognizerDelegate>
+@property (nonatomic, readonly) id <TRSuggestionItem> selectedSuggestion;
+@property (nonatomic, readonly) NSArray *suggestions;
+@property (nonatomic, copy) void (^didAutocompleteWith)(id <TRSuggestionItem>);
+@property (nonatomic, copy) void (^didFailWithError)(NSError *);
+@property (nonatomic, strong) UIColor *separatorColor;
+@property (nonatomic, assign) UITableViewCellSeparatorStyle separatorStyle;
+@property (nonatomic, assign) CGFloat topMargin;
+@property (nonatomic, assign) CGFloat bottomMargin;
+@property (nonatomic, assign) CGFloat cellHeight;
++ (instancetype)autocompleteViewBindTo:(UITextField *)textField
+                           usingSource:(id <TRAutocompleteItemsSource>)itemsSource
+                           cellFactory:(id <TRAutocompletionCellFactory>)factory
+                          presentingIn:(UIViewController *)controller;
+- (void)updateLayout;
+- (void)performQuery;
 @end

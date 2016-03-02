@@ -27,10 +27,50 @@
 // either expressed or implied, of the FreeBSD Project.
 //
 
-#import <Foundation/Foundation.h>
+#import "TRDefaultCellFactory.h"
+#import "TRAutocompleteItemsSource.h"
 
-@interface NSString (TRStringExtensions)
+@interface TRDefaultAutocompletionCell : UITableViewCell <TRAutocompletionCell>
+@end
 
-- (NSString *)urlEncode;
+@implementation TRDefaultAutocompletionCell
+
+- (void)updateWith:(id <TRSuggestionItem>)item
+{
+    self.textLabel.text = item.completionText;
+}
+
+@end
+
+@implementation TRDefaultCellFactory
+{
+    UIColor *_foregroundColor;
+    CGFloat _fontSize;
+}
+
+- (instancetype)initWithCellForegroundColor:(UIColor *)foregroundColor fontSize:(CGFloat)fontSize
+{
+    if ((self = [super init])) {
+        _foregroundColor = foregroundColor;
+        _fontSize = fontSize;
+    }
+    return self;
+}
+
+- (instancetype)init
+{
+    return [self initWithCellForegroundColor:[UIColor blackColor] fontSize:14.0f];
+}
+
+- (id <TRAutocompletionCell>)createReusableCellWithIdentifier:(NSString *)identifier
+{
+    TRDefaultAutocompletionCell *cell = [[TRDefaultAutocompletionCell alloc] initWithStyle:UITableViewCellStyleDefault
+                                                                           reuseIdentifier:identifier];
+    cell.textLabel.font = [UIFont systemFontOfSize:_fontSize];
+    cell.textLabel.textColor = _foregroundColor;
+    cell.backgroundColor = [UIColor clearColor];
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    return cell;
+}
 
 @end
