@@ -8,127 +8,104 @@ What is TRAutocompleteView?
   <img src="/screenshots/ipad.png" />
 </p>
 
-TRAutocompleteView is highly customizable autocomplete/suggestionslist view. No inheritance, just a single line of code - attach TRAutocompleteView 
-to any existing instance of UITextField, customize look and feel (optional), and that's it!
+TRAutocompleteView is highly customizable autocomplete/suggestionslist view. 
+No inheritance, just a single line of code - attach TRAutocompleteView to any existing instance of UITextField, implement your custom data source and cell factory, customize look and feel and that's it! 
 It works on the iPhone and iPad and supports all possible orientations.
 
 
 Step 0: Prerequisites
 ---------------------
-You'll need an iOS 5.1+ project
+You'll need an iOS 8.0+ project
 
+Step 1: Get TRAutocompleteView
+------------------------------
+Via CocoaPods:
 
-Step 1: Get TRAutocompleteView files (add as Git submodule)(recommended)
-----------------
-In terminal navigate to the root of your project directory and run these commands:
+````bash
+pod "TRAutocompleteView", "~>1.2", :git => "https://github.com/ashaman/TRAutocompleteView.git"
+````
 
-    git submodule add git://github.com/TarasRoshko/TRAutocompleteView.git thirdparty/TRAutocompleteView
-    git commit -m 'TRAutocompleteView'
+Via Carthage:
 
-This creates new submodule, downloads the files to thirdparty/TRAutocompleteView directory within your project and creates new commit with updated git repo settings.
-Next run
+````bash
+github "ashaman/TRAutocompleteView" ~>1.2
+````
 
-    git submodule update --init --recursive
+Step 2: Use it
+--------------
 
-
-Step 2: Add TRAutocompleteView to your project
-------------------------------------
-
-Simply add all files from src directory (make sure you UNCHECK "Copy items"),
-If you want to use TRGoogleMapsAutocompleteItemsSource - you'll need to add AFNetworking as well (no worries, it's registered as submodule in TRAutocompleteView)
-
-
-Step 3: Use it
-------------------------
-
-Assume you have two ivars in your view controller:
+Assume you have two instance variables in your view controller
 
 ````objective-c
     IBOutlet UITextField *_textField;
     TRAutocompleteView *_autocompleteView;
 ````
 
-Bind autocompleteview to that UITextField (e.g in loadView method):
+Bind autocomplete view to that UITextField (e.g in loadView method):
 
 ````objective-c
 _autocompleteView = [TRAutocompleteView autocompleteViewBindedTo:_textField
-                                                     usingSource:[[TRGoogleMapsAutocompleteItemsSource alloc] initWithMinimumCharactersToTrigger:2 apiKey:@"INSERT_YOUR_PLACES_API_KEY_HERE"]
-                                                     cellFactory:[[TRGoogleMapsAutocompletionCellFactory alloc] initWithCellForegroundColor:[UIColor lightGrayColor] fontSize:14]
+                                                     usingSource:YOUR_SOURCE_HERE
+                                                     cellFactory:YOUR_FACTORY_HERE
                                                     presentingIn:self];
 ````
 
 What's going on here?
-You've just binded _autocompleteView to _textField, and used google maps completion source with google maps cell factory. Positioning, resizing, etc will be handled for you automatically.
-As you can see from the example above, if you want completely different items source and customized cells - there is nothing easier:
+You've just binded _autocompleteView to _textField, and used your custom completion source with custom cell factory. Positioning, resizing, etc will be handled for you automatically.
+You should implement the following protocols:
 ````objective-c
+
 @protocol TRAutocompleteItemsSource <NSObject>
-
 - (NSUInteger)minimumCharactersToTrigger;
-- (void)itemsFor:(NSString *)query whenReady:(void (^)(NSArray *))suggestionsReady;
-
+- (void)fetchItemsForQuery:(NSString *)query completionHandler:(void (^)(NSArray *, NSError *))suggestionsReady;
 @end
 
 @protocol TRSuggestionItem <NSObject>
-
 - (NSString *)completionText;
-
 @end
 
 @protocol TRAutocompletionCell <NSObject>
-
-- (void)updateWith:(id <TRSuggestionItem>)item;
-
+- (void)updateWithSuggestionItem:(id <TRSuggestionItem>)item;
 @end
 
 @protocol TRAutocompletionCellFactory <NSObject>
-
-- (id <TRAutocompletionCell>)createReusableCellWithIdentifier:(NSString *)identifier;
-
+- (UITableViewCell <TRAutocompletionCell> *)createReusableCellWithIdentifier:(NSString *)identifier;
 @end
 
 ````
 
 Conform TRAutocompleteItemsSource to provide your own items source, conform TRAutocompletionCellFactory to provide your custom cells.
 
-Step 4: Customize TRAutocompleteView
-------------------------
+Step 3: Customize TRAutocompleteView
+------------------------------------
   
 **TRAutocompleteView Customizations**
 
 Main customization step is to create your own cell and use it with CellFactory, but also you can use following properties
 
 ````objective-c
-@property(nonatomic) UIColor *separatorColor;
-@property(nonatomic) UITableViewCellSeparatorStyle separatorStyle;
+@property (nonatomic, strong) UIColor *separatorColor;
+@property (nonatomic, assign) UITableViewCellSeparatorStyle separatorStyle;
 
-@property(nonatomic) CGFloat topMargin;
+@property (nonatomic, assign) CGFloat topMargin;
+@property (nonatomic, assign) CGFloat bottomMargin;
+@property (nonatomic, assign) CGFloat cellHeight;
 ````
 
 Also, properties for tracking completion state:
 
 ````objective-c
-@property(readonly) id<TRSuggestionItem> selectedSuggestion;
-@property(readonly) NSArray *suggestions;
-@property(copy) void (^didAutocompleteWith)(id <TRSuggestionItem>);
+@property (nonatomic, readonly) id <TRSuggestionItem> selectedSuggestion;
+@property (nonatomic, readonly) NSArray *suggestions;
+@property (nonatomic, copy) void (^didAutocompleteWith)(id <TRSuggestionItem>);
+@property (nonatomic, copy) void (^didFailWithError)(NSError *);
 ````
 
-Step 5: Customize TRAutocompleteView
-------------------------
-Check out Demo project, it's extremely easy to get started and requires a few simple steps to configure view for your needs,
-Google maps source/factory code will help you to understand what's going on
-
-Using google places autocomplete
-------------------------
-TRAutocompleteView ships with google places autocompletion source. In order to use it, you must generate YOUR OWN api key (get it here: https://code.google.com/apis/console)
-and pass it to TRGoogleMapsAutocompleteItemsSource initWithMinimumCharactersToTrigger:apiKey initializer.
-TRGoogleMapsAutocompleteItemsSource uses new Places API for autocompletion: https://developers.google.com/places/documentation/autocomplete 
-
-**P.S Common mistake: DON NOT USE Google Maps API v3 key, 
-you need Places API KEY instead, otherwise all requests will just fail with REQUEST_DENIED status code**
-
-CocoaPods
-------------------------
-pod 'TRAutocompleteView',       '~> 1.1'
+And some methods to perform queries or update layout in case of rotation:
+````objective-c
+- (void)updateLayout;
+- (void)performQuery;
+````
 
 License
 ------------------------
