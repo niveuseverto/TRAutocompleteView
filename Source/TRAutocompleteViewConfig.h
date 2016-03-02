@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2013, Taras Roshko
+// Copyright (c) 2016, Yaroslav Vorontsov
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -27,13 +27,11 @@
 // either expressed or implied, of the FreeBSD Project.
 //
 
-#import <UIKit/UIKit.h>
-
-#import "TRAppDelegate.h"
-
-int main(int argc, char *argv[])
-{
-    @autoreleasepool {
-        return UIApplicationMain(argc, argv, nil, NSStringFromClass([TRAppDelegate class]));
-    }
-}
+#ifndef TR_LOGGING
+#define TR_LOGGING
+    #ifdef DEBUG
+        #define TRLogDebug(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__);
+    #else
+        #define TRLogDebug(...)
+    #endif
+#endif

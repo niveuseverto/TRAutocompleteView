@@ -1,6 +1,11 @@
 //
 // Copyright (c) 2013, Taras Roshko
 // All rights reserved.
+
+// Significant modifications added by Yaroslav Vorontsov
+// Copyright (c) 2015-2016, Yaroslav Vorontsov
+// All rights reserved.
+
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are met:
@@ -27,10 +32,13 @@
 // either expressed or implied, of the FreeBSD Project.
 //
 
-#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
 
-@interface TRAppDelegate : UIResponder <UIApplicationDelegate>
+@protocol TRAutocompleteItemsSource <NSObject>
+- (NSUInteger)minimumCharactersToTrigger;
+- (void)fetchItemsForQuery:(NSString *)query completionHandler:(void (^)(NSArray *, NSError *))suggestionsReady;
+@end
 
-@property (strong, nonatomic) UIWindow *window;
-
+@protocol TRSuggestionItem <NSObject>
+- (NSString *)completionText;
 @end

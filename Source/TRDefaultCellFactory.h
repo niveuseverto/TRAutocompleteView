@@ -28,17 +28,8 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "TRAutocompletionCellFactory.h"
 
-@protocol TRSuggestionItem;
-
-@protocol TRAutocompletionCell <NSObject>
-
-- (void)updateWith:(id <TRSuggestionItem>)item;
-
-@end
-
-@protocol TRAutocompletionCellFactory <NSObject>
-
-- (id <TRAutocompletionCell>)createReusableCellWithIdentifier:(NSString *)identifier;
-
+@interface TRDefaultCellFactory : NSObject<TRAutocompletionCellFactory>
+- (instancetype)initWithCellForegroundColor:(UIColor *)foregroundColor fontSize:(CGFloat)fontSize;
 @end
