@@ -48,6 +48,7 @@
 @property (nonatomic, assign) CGFloat topMargin;
 @property (nonatomic, assign) CGFloat bottomMargin;
 @property (nonatomic, assign) CGFloat cellHeight;
+@property (nonatomic, assign) BOOL endEditingOnCompletion;
 + (instancetype)autocompleteViewBindTo:(UITextField *)textField
                            usingSource:(id <TRAutocompleteItemsSource>)itemsSource
                            cellFactory:(id <TRAutocompletionCellFactory>)factory

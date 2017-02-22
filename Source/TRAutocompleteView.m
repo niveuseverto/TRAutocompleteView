@@ -134,6 +134,7 @@
     self.topMargin = 0;
     self.bottomMargin = 0;
     self.cellHeight = 40;
+    self.endEditingOnCompletion = YES;
 }
 
 #pragma mark - Frame calculation routines
@@ -272,7 +273,9 @@
     NSAssert([suggestion conformsToProtocol:@protocol(TRSuggestionItem)], @"Suggestion item must conform TRSuggestionItem");
     self.selectedSuggestion = (id <TRSuggestionItem>) suggestion;
     _queryTextField.text = self.selectedSuggestion.completionText;
-    [_queryTextField resignFirstResponder];
+    if (self.endEditingOnCompletion) {
+        [_queryTextField resignFirstResponder];
+    }
     if (self.didAutocompleteWith) {
         self.didAutocompleteWith(self.selectedSuggestion);
     }
