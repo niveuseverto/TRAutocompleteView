@@ -276,6 +276,7 @@
     if (self.endEditingOnCompletion) {
         [_queryTextField resignFirstResponder];
     }
+    self.hidden = YES;
     if (self.didAutocompleteWith) {
         self.didAutocompleteWith(self.selectedSuggestion);
     }
