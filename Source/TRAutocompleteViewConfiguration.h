@@ -1,12 +1,7 @@
 //
-// Copyright (c) 2013, Taras Roshko
+// Copyright (c) 2016-2017, Yaroslav Vorontsov
 // All rights reserved.
 //
-
-// Significant modifications added by Yaroslav Vorontsov
-// Copyright (c) 2015-2016, Yaroslav Vorontsov
-// All rights reserved.
-
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are met:
 //
@@ -32,14 +27,11 @@
 // either expressed or implied, of the FreeBSD Project.
 //
 
-@import UIKit;
-
-@protocol TRSuggestionItem;
-
-@protocol TRAutocompletionCell <NSObject>
-- (void)updateWithSuggestionItem:(id <TRSuggestionItem>)item;
-@end
-
-@protocol TRAutocompletionCellFactory <NSObject>
-- (UITableViewCell <TRAutocompletionCell> *)createReusableCellWithIdentifier:(NSString *)identifier;
-@end
+#ifndef TR_LOGGING
+#define TR_LOGGING
+    #ifdef DEBUG
+        #define TRLogDebug(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__);
+    #else
+        #define TRLogDebug(...)
+    #endif
+#endif

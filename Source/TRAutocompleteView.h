@@ -4,7 +4,7 @@
 //
 
 // Significant modifications added by Yaroslav Vorontsov
-// Copyright (c) 2015-2016, Yaroslav Vorontsov
+// Copyright (c) 2015-2017, Yaroslav Vorontsov
 // All rights reserved.
 
 // Redistribution and use in source and binary forms, with or without
@@ -32,27 +32,24 @@
 // either expressed or implied, of the FreeBSD Project.
 //
 
-@import UIKit;
+#import <UIKit/UIKit.h>
 
-@protocol TRAutocompleteItemsSource;
-@protocol TRAutocompletionCellFactory;
+@protocol TRAutocompleteItemSource;
+@protocol TRAutocompleteCellConfiguration;
 @protocol TRSuggestionItem;
 
 @interface TRAutocompleteView : UIView <UIGestureRecognizerDelegate>
-@property (nonatomic, readonly) id <TRSuggestionItem> selectedSuggestion;
-@property (nonatomic, readonly) NSArray *suggestions;
-@property (nonatomic, copy) void (^didAutocompleteWith)(id <TRSuggestionItem>);
-@property (nonatomic, copy) void (^didFailWithError)(NSError *);
-@property (nonatomic, strong) UIColor *separatorColor;
-@property (nonatomic, assign) UITableViewCellSeparatorStyle separatorStyle;
-@property (nonatomic, assign) CGFloat topMargin;
-@property (nonatomic, assign) CGFloat bottomMargin;
-@property (nonatomic, assign) CGFloat cellHeight;
-@property (nonatomic, assign) BOOL endEditingOnCompletion;
-+ (instancetype)autocompleteViewBindTo:(UITextField *)textField
-                           usingSource:(id <TRAutocompleteItemsSource>)itemsSource
-                           cellFactory:(id <TRAutocompletionCellFactory>)factory
-                          presentingIn:(UIViewController *)controller;
+@property (strong, nonatomic, readonly) UITableView *tableView;
+@property (strong, nonatomic, readonly) id <TRSuggestionItem> selectedSuggestion;
+@property (strong, nonatomic, readonly) NSArray *suggestions;
+@property (assign, nonatomic) BOOL endEditingOnCompletion;
+@property (assign, nonatomic) BOOL extendToKeyboardEdge;
+@property (copy, nonatomic) void (^didAutocompleteWith)(id <TRSuggestionItem>);
+@property (copy, nonatomic) void (^didFailWithError)(NSError *);
++ (instancetype)viewBoundTo:(UITextField *)textField
+                usingSource:(id <TRAutocompleteItemSource>)itemsSource
+          cellConfiguration:(id <TRAutocompleteCellConfiguration>)factory
+               presentingIn:(UIViewController *)controller;
 - (void)updateLayout;
 - (void)performQuery;
 @end

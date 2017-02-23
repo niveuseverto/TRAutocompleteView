@@ -8,19 +8,19 @@
 
 /* Begin PBXBuildFile section */
 		D561010E8A797A6E84CAB1C3 /* TRAutocompleteView.m in Sources */ = {isa = PBXBuildFile; fileRef = D56104D11A389DFD0C06515D /* TRAutocompleteView.m */; };
-		D561027470A214C2A238E2DE /* TRAutocompleteItemsSource.h in Headers */ = {isa = PBXBuildFile; fileRef = D5610E7BD112E2BACB3CD390 /* TRAutocompleteItemsSource.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		D561068CD7E1FC927CEAD1F8 /* TRAutocompletionCellFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = D561059EC78C616937FBD8C5 /* TRAutocompletionCellFactory.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		D56109143D7264DECDD75A85 /* TRAutocompleteViewConfig.h in Resources */ = {isa = PBXBuildFile; fileRef = D5610AAE10FF82626917D8D5 /* TRAutocompleteViewConfig.h */; };
+		D561027470A214C2A238E2DE /* TRAutocompleteItemSource.h in Headers */ = {isa = PBXBuildFile; fileRef = D5610E7BD112E2BACB3CD390 /* TRAutocompleteItemSource.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D561068CD7E1FC927CEAD1F8 /* TRAutocompleteCellConfiguration.h in Headers */ = {isa = PBXBuildFile; fileRef = D561059EC78C616937FBD8C5 /* TRAutocompleteCellConfiguration.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D56109143D7264DECDD75A85 /* TRAutocompleteViewConfiguration.h in Resources */ = {isa = PBXBuildFile; fileRef = D5610AAE10FF82626917D8D5 /* TRAutocompleteViewConfiguration.h */; };
 		D5610AF3F5251A8D8599BBF5 /* TRAutocompleteView.h in Headers */ = {isa = PBXBuildFile; fileRef = D5610EFC570CE44B0832784F /* TRAutocompleteView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DDCE2E521C870B5B008EE21C /* AutocompleteView.h in Headers */ = {isa = PBXBuildFile; fileRef = DDCE2E511C870B5B008EE21C /* AutocompleteView.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		DDCE2E591C871661008EE21C /* TRAutocompleteViewConfig.h in Headers */ = {isa = PBXBuildFile; fileRef = D5610AAE10FF82626917D8D5 /* TRAutocompleteViewConfig.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DDCE2E591C871661008EE21C /* TRAutocompleteViewConfiguration.h in Headers */ = {isa = PBXBuildFile; fileRef = D5610AAE10FF82626917D8D5 /* TRAutocompleteViewConfiguration.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		D56104D11A389DFD0C06515D /* TRAutocompleteView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRAutocompleteView.m; sourceTree = "<group>"; };
-		D561059EC78C616937FBD8C5 /* TRAutocompletionCellFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRAutocompletionCellFactory.h; sourceTree = "<group>"; };
-		D5610AAE10FF82626917D8D5 /* TRAutocompleteViewConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRAutocompleteViewConfig.h; sourceTree = "<group>"; };
-		D5610E7BD112E2BACB3CD390 /* TRAutocompleteItemsSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRAutocompleteItemsSource.h; sourceTree = "<group>"; };
+		D561059EC78C616937FBD8C5 /* TRAutocompleteCellConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRAutocompleteCellConfiguration.h; sourceTree = "<group>"; };
+		D5610AAE10FF82626917D8D5 /* TRAutocompleteViewConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRAutocompleteViewConfiguration.h; sourceTree = "<group>"; };
+		D5610E7BD112E2BACB3CD390 /* TRAutocompleteItemSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRAutocompleteItemSource.h; sourceTree = "<group>"; };
 		D5610EFC570CE44B0832784F /* TRAutocompleteView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRAutocompleteView.h; sourceTree = "<group>"; };
 		DDCE2E4E1C870B5B008EE21C /* AutocompleteView.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AutocompleteView.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DDCE2E511C870B5B008EE21C /* AutocompleteView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AutocompleteView.h; sourceTree = "<group>"; };
@@ -43,9 +43,9 @@
 			children = (
 				D5610EFC570CE44B0832784F /* TRAutocompleteView.h */,
 				D56104D11A389DFD0C06515D /* TRAutocompleteView.m */,
-				D5610E7BD112E2BACB3CD390 /* TRAutocompleteItemsSource.h */,
-				D561059EC78C616937FBD8C5 /* TRAutocompletionCellFactory.h */,
-				D5610AAE10FF82626917D8D5 /* TRAutocompleteViewConfig.h */,
+				D5610E7BD112E2BACB3CD390 /* TRAutocompleteItemSource.h */,
+				D561059EC78C616937FBD8C5 /* TRAutocompleteCellConfiguration.h */,
+				D5610AAE10FF82626917D8D5 /* TRAutocompleteViewConfiguration.h */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -84,10 +84,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				DDCE2E521C870B5B008EE21C /* AutocompleteView.h in Headers */,
-				DDCE2E591C871661008EE21C /* TRAutocompleteViewConfig.h in Headers */,
+				DDCE2E591C871661008EE21C /* TRAutocompleteViewConfiguration.h in Headers */,
 				D5610AF3F5251A8D8599BBF5 /* TRAutocompleteView.h in Headers */,
-				D561027470A214C2A238E2DE /* TRAutocompleteItemsSource.h in Headers */,
-				D561068CD7E1FC927CEAD1F8 /* TRAutocompletionCellFactory.h in Headers */,
+				D561027470A214C2A238E2DE /* TRAutocompleteItemSource.h in Headers */,
+				D561068CD7E1FC927CEAD1F8 /* TRAutocompleteCellConfiguration.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -147,7 +147,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D56109143D7264DECDD75A85 /* TRAutocompleteViewConfig.h in Resources */,
+				D56109143D7264DECDD75A85 /* TRAutocompleteViewConfiguration.h in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

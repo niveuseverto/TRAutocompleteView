@@ -1,12 +1,12 @@
 //
 // Copyright (c) 2013, Taras Roshko
 // All rights reserved.
+//
 
 // Significant modifications added by Yaroslav Vorontsov
-// Copyright (c) 2015-2016, Yaroslav Vorontsov
+// Copyright (c) 2015-2017, Yaroslav Vorontsov
 // All rights reserved.
 
-//
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are met:
 //
@@ -32,13 +32,20 @@
 // either expressed or implied, of the FreeBSD Project.
 //
 
-#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
-@protocol TRAutocompleteItemsSource <NSObject>
-- (NSUInteger)minimumCharactersToTrigger;
-- (void)fetchItemsForQuery:(NSString *)query completionHandler:(void (^)(NSArray *, NSError *))suggestionsReady;
+@protocol TRSuggestionItem;
+
+@protocol TRAutocompleteCell <NSObject>
+- (void)updateWithSuggestionItem:(id <TRSuggestionItem>)item;
 @end
 
-@protocol TRSuggestionItem <NSObject>
-- (NSString *)completionText;
+@protocol TRAutocompleteCellConfiguration <NSObject>
+
+@required
+@property (assign, nonatomic, readonly) CGFloat cellHeight;
+@property (strong, nonatomic, readonly) Class cellClass;
+
+@optional
+@property (strong, nonatomic, readonly) UINib *cellNib;
 @end
