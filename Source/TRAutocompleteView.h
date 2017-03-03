@@ -44,6 +44,7 @@
 @property (strong, nonatomic, readonly) NSArray *suggestions;
 @property (assign, nonatomic) BOOL endEditingOnCompletion;
 @property (assign, nonatomic) BOOL extendToKeyboardEdge;
+@property (assign, nonatomic) BOOL hideOnFocusLoss;
 @property (copy, nonatomic) void (^didAutocompleteWith)(id <TRSuggestionItem>);
 @property (copy, nonatomic) void (^didFailWithError)(NSError *);
 + (instancetype)viewBoundTo:(UITextField *)textField

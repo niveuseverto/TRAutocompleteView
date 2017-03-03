@@ -104,6 +104,10 @@
                                          name:UITextFieldTextDidChangeNotification
                                        object:self.queryTextField];
         [self.notificationCenter addObserver:self
+                                    selector:@selector(editingFinished:)
+                                        name:UITextFieldTextDidEndEditingNotification
+                                      object:self.queryTextField];
+        [self.notificationCenter addObserver:self
                                     selector:@selector(keyboardWasShown:)
                                         name:UIKeyboardDidShowNotification
                                       object:nil];
@@ -203,12 +207,22 @@
     self.tableView.frame = self.bounds;
 }
 
-#pragma mark - Queries and result handling
+#pragma mark - Action handlers
 
 - (void)queryChanged:(UITextField *)sender
 {
     [self performQuery];
 }
+
+- (void)editingFinished:(UITextField *)sender
+{
+    if (self.hideOnFocusLoss) {
+        [self removeFromSuperview];
+        _kbFrame = CGRectNull;
+    }
+}
+
+#pragma mark - Queries and result handling
 
 - (void)performQuery
 {
