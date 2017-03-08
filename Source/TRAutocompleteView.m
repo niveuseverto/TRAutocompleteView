@@ -37,7 +37,6 @@
 #import "TRAutocompleteCellConfiguration.h"
 #import "TRAutocompleteViewConfiguration.h"
 
-
 @interface TRAutocompleteView () <UITableViewDelegate, UITableViewDataSource>
 @property (strong, nonatomic, readonly) id<TRAutocompleteItemSource> itemSource;
 @property (strong, nonatomic, readonly) id<TRAutocompleteCellConfiguration> cellConfiguration;
@@ -53,7 +52,6 @@
 {
     UITableView *_tableView;
     CGRect _kbFrame;
-    NSTimer *_delayTimer;
 }
 
 #pragma mark - Initialization and deallocation
@@ -209,9 +207,11 @@
 
 #pragma mark - Action handlers
 
-- (void)queryChanged:(UITextField *)sender
+- (void)queryChanged:(NSNotification *)note
 {
-    [self performQuery];
+    NSString *query = [note.object text];
+    [NSObject cancelPreviousPerformRequestsWithTarget:self];
+    [self performSelector:@selector(performQuery:) withObject:query afterDelay:0.3f];
 }
 
 - (void)editingFinished:(UITextField *)sender
@@ -224,32 +224,19 @@
 
 #pragma mark - Queries and result handling
 
-- (void)performQuery
+- (void)performQuery:(NSString *)query
 {
-    if (self.queryTextField.text.length >= self.itemSource.minimumCharactersToTrigger) {
+    // Check again due to delayed -performSelector invocation
+    if ([query isEqualToString:self.queryTextField.text]
+            && query.length >= self.itemSource.minimumCharactersToTrigger) {
         // FIXME: introduce Levenstein distance to calculate distance between 2 requests
-        TRLogDebug(@"Invalidating search timer");
-        [_delayTimer invalidate];
-        _delayTimer = [NSTimer scheduledTimerWithTimeInterval:0.3
-                                                       target:self
-                                                     selector:@selector(timerDidFire:)
-                                                     userInfo:@{ @"query": self.queryTextField.text }
-                                                      repeats:NO];
-    } else {
-        self.suggestions = nil;
-        self.hidden = YES;
-    }
-}
-
-- (void)timerDidFire:(NSTimer *)sender
-{
-    if (sender.isValid) {
-        NSString *query = sender.userInfo[@"query"];
-        TRLogDebug(@"Firing delayed search for query: %@", query);
         typeof(self) __weak that = self;
         [self.itemSource fetchItemsForQuery:query completionHandler:^(NSArray *suggestions, NSError *error) {
             [that handleResultsForQuery:query suggestions:suggestions error:error];
         }];
+    } else {
+        self.suggestions = nil;
+        self.hidden = YES;
     }
 }
 
@@ -261,7 +248,7 @@
         if (self.didFailWithError) {
             self.didFailWithError(error);
         }
-    } else if (query.length < _itemSource.minimumCharactersToTrigger) {
+    } else if (query.length < self.itemSource.minimumCharactersToTrigger) {
         // No triggering needed
         self.suggestions = nil;
         self.hidden = YES;

@@ -52,5 +52,4 @@
           cellConfiguration:(id <TRAutocompleteCellConfiguration>)factory
                presentingIn:(UIViewController *)controller;
 - (void)updateLayout;
-- (void)performQuery;
 @end
