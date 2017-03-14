@@ -47,6 +47,7 @@
 @property (assign, nonatomic) BOOL hideOnFocusLoss;
 @property (copy, nonatomic) void (^didAutocompleteWith)(id <TRSuggestionItem>);
 @property (copy, nonatomic) void (^didFailWithError)(NSError *);
+@property (weak, nonatomic) UIView *anchorView; // can be specified as the 1st top view over autocomplete view
 + (instancetype)viewBoundTo:(UITextField *)textField
                 usingSource:(id <TRAutocompleteItemSource>)itemsSource
           cellConfiguration:(id <TRAutocompleteCellConfiguration>)factory

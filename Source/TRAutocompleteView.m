@@ -260,7 +260,11 @@
             self.hidden = YES;
         } else if (self.suggestions.count > 0) {
             if (!self.superview) {
-                [self.contextController.view addSubview:self];
+                if (self.anchorView) {
+                    [self.contextController.view insertSubview:self belowSubview:self.anchorView];
+                } else {
+                    [self.contextController.view addSubview:self];
+                }
             }
             self.hidden = NO;
             [self updateLayout];
