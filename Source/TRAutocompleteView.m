@@ -46,6 +46,11 @@
 @property (copy, nonatomic, readonly) NSString *cellReuseIdentifier;
 @property (weak, nonatomic, readonly) UITextField *queryTextField;
 @property (weak, nonatomic, readonly) UIViewController *contextController;
+
+@property (assign, nonatomic, readonly) BOOL useListNarrowing;
+@property (assign, nonatomic, readonly) BOOL endEditingOnCompletion;
+@property (assign, nonatomic, readonly) BOOL extendToKeyboardEdge;
+@property (assign, nonatomic, readonly) BOOL hideOnFocusLoss;
 @end
 
 @implementation TRAutocompleteView
@@ -93,10 +98,14 @@
         self.backgroundColor = [UIColor whiteColor];
         self.layoutMargins = UIEdgeInsetsZero;
         self.preservesSuperviewLayoutMargins = NO;
-        self.endEditingOnCompletion = YES;
         self.userInteractionEnabled = YES;
+        _options = TRAutocompleteListDefault;
 
         // Notifications
+        [self.notificationCenter addObserver:self
+                                    selector:@selector(editingStarted:)
+                                        name:UITextFieldTextDidBeginEditingNotification
+                                      object:self.queryTextField];
         [self.notificationCenter addObserver:self
                                      selector:@selector(queryChanged:)
                                          name:UITextFieldTextDidChangeNotification
@@ -156,6 +165,27 @@
     return _tableView;
 }
 
+- (BOOL)useListNarrowing
+{
+    return self.options & TRAutocompleteListNarrowingMode;
+}
+
+- (BOOL)endEditingOnCompletion
+{
+    return self.options & TRAutocompleteEndEditingOnCompletion;
+}
+
+- (BOOL)extendToKeyboardEdge
+{
+    return self.options & TRAutocompleteExtendToKeyboardEdge;
+}
+
+- (BOOL)hideOnFocusLoss
+{
+    return self.options & TRAutocompleteHideOnFocusLoss;
+}
+
+
 #pragma mark - Frame calculation routines
 
 - (CGRect)actualFrameFromKeyboardNotification:(NSNotification *)notification
@@ -205,7 +235,16 @@
     self.tableView.frame = self.bounds;
 }
 
+
 #pragma mark - Action handlers
+
+- (void)editingStarted:(NSNotification *)note
+{
+    if (self.useListNarrowing) {
+        NSString *query = [note.object text];
+        [self performQuery:query];
+    }
+}
 
 - (void)queryChanged:(NSNotification *)note
 {
@@ -214,13 +253,14 @@
     [self performSelector:@selector(performQuery:) withObject:query afterDelay:0.3f];
 }
 
-- (void)editingFinished:(UITextField *)sender
+- (void)editingFinished:(NSNotification *)note
 {
     if (self.hideOnFocusLoss) {
         [self removeFromSuperview];
         _kbFrame = CGRectNull;
     }
 }
+
 
 #pragma mark - Queries and result handling
 
@@ -273,6 +313,7 @@
     }
 }
 
+
 #pragma mark - Table view data source
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -291,6 +332,7 @@
     [cell updateWithSuggestionItem:suggestion];
     return cell;
 }
+
 
 #pragma mark - Table view delegate
 

@@ -38,13 +38,21 @@
 @protocol TRAutocompleteCellConfiguration;
 @protocol TRSuggestionItem;
 
+
+typedef NS_OPTIONS(NSUInteger, TRAutocompleteOptions) {
+    TRAutocompleteListNarrowingMode = 1 << 0,
+    TRAutocompleteEndEditingOnCompletion = 1 << 1,
+    TRAutocompleteExtendToKeyboardEdge = 1 << 2,
+    TRAutocompleteHideOnFocusLoss = 1 << 3,
+    TRAutocompleteListDefault = TRAutocompleteEndEditingOnCompletion
+};
+
+
 @interface TRAutocompleteView : UIView <UIGestureRecognizerDelegate>
 @property (strong, nonatomic, readonly) UITableView *tableView;
 @property (strong, nonatomic, readonly) id <TRSuggestionItem> selectedSuggestion;
 @property (strong, nonatomic, readonly) NSArray *suggestions;
-@property (assign, nonatomic) BOOL endEditingOnCompletion;
-@property (assign, nonatomic) BOOL extendToKeyboardEdge;
-@property (assign, nonatomic) BOOL hideOnFocusLoss;
+@property (assign, nonatomic) TRAutocompleteOptions options;
 @property (copy, nonatomic) void (^didAutocompleteWith)(id <TRSuggestionItem>);
 @property (copy, nonatomic) void (^didFailWithError)(NSError *);
 @property (weak, nonatomic) UIView *anchorView; // can be specified as the 1st top view over autocomplete view
