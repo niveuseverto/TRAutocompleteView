@@ -37,6 +37,9 @@
 #import "TRAutocompleteCellConfiguration.h"
 #import "TRAutocompleteViewConfiguration.h"
 
+static NSTimeInterval const kSearchDelay = 0.3;
+
+
 @interface TRAutocompleteView () <UITableViewDelegate, UITableViewDataSource>
 @property (strong, nonatomic, readonly) id<TRAutocompleteItemSource> itemSource;
 @property (strong, nonatomic, readonly) id<TRAutocompleteCellConfiguration> cellConfiguration;
@@ -242,7 +245,7 @@
 {
     if (self.useListNarrowing) {
         NSString *query = [note.object text];
-        [self performQuery:query];
+        [self performSelector:@selector(performQuery:) withObject:query afterDelay:kSearchDelay];
     }
 }
 
@@ -250,7 +253,7 @@
 {
     NSString *query = [note.object text];
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
-    [self performSelector:@selector(performQuery:) withObject:query afterDelay:0.3f];
+    [self performSelector:@selector(performQuery:) withObject:query afterDelay:kSearchDelay];
 }
 
 - (void)editingFinished:(NSNotification *)note
